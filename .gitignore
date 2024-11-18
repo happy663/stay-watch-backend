@@ -228,3 +228,6 @@ mysql/test.sql
 
 
 __pycache__/
+
+.venv
+__pycache__/
