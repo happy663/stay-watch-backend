@@ -101,8 +101,8 @@ type EditedLog struct {
 	gorm.Model
 	UserId    int64
 	Date      time.Time `gorm:"type:date"`
-	Reporting time.Time `gorm:"type:time"`
-	Leave     time.Time `gorm:"type:time"`
+	Reporting time.Time `gorm:"type:datetime"`
+	Leave     time.Time `gorm:"type:datetime"`
 }
 
 type Cluster struct {
