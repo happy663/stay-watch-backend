@@ -1,0 +1,16 @@
+FROM python:3.8.18
+
+WORKDIR /usr/probability/src
+
+RUN apt update && apt install -y \
+    libpq-dev \
+    gcc
+
+COPY ./probability/app/src .
+
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+EXPOSE 8090
+
+CMD ["python", "main.py"]
