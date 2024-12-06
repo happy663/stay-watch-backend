@@ -51,6 +51,24 @@ services:
     depends_on:
       vol_mysql:
         condition: service_healthy      
+
+  vol_probability_service:
+    container_name: vol_probability
+    build:
+      context: ./probability
+      dockerfile: ./probability/dockerfile
+    volumes:
+      - ./probability/app:/app
+    env_file:
+      - probability/.env
+    ports:
+      - "${PROBABILITY_PORT}:8090"
+    expose:
+      - 8090
+    depends_on:
+      vol_mysql:
+        condition: service_healthy
+
 networks:
   default:
     external:
