@@ -1,0 +1,22 @@
+FROM python:3.12.6-alpine
+
+WORKDIR /usr/clustering/src
+
+RUN apt update && apt install -y \
+    libpq-dev \
+    gcc \
+    vim \
+    cron
+
+COPY ./probability/clustering/src/ .
+
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+RUN echo "0 9 * * 1 date >> /usr/clustering/log/server.log\n0 9 * * 1 /usr/local/bin/python3 /usr/clustering/src/main.py >> /usr/clustering/log/server.log" > /var/spool/cron/crontabs/root/crontab
+RUN crontab /var/spool/cron/crontabs/root/crontab
+# RUN chmod 0644 /etc/cron.d/cron-clustering
+# RUN printenv | awk '{print "export " $1}' > /root/env.sh
+# RUN chmod +x /usr/local/bin/cron.sh /root/env.sh
+
+CMD ["cron", "-f"]
