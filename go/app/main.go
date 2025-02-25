@@ -41,7 +41,7 @@ func SetUpServer() *gin.Engine {
 	{
 		versionEngine.GET("/stayers", controller.Stayer)
 		versionEngine.POST("/stayers", controller.Beacon)
-		versionEngine.GET("/logs", controller.Log)
+		versionEngine.GET("/logs", controller.LogRefinementSearch)
 		versionEngine.GET("/logs/gantt", controller.LogGantt)
 		versionEngine.GET("/users", controller.PastUserList) // 編集機能のフロントのブランチがマージされたら消す
 		versionEngine.GET("/users/:communityId", controller.UserList)

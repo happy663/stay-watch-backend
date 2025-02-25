@@ -231,3 +231,55 @@ func LogGantt(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, GanttLogs)
 }
+
+func LogRefinementSearch(c *gin.Context) {
+	userID, err := strconv.ParseInt(c.Query("user-id"), 10, 64)
+	if err != nil {
+		// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "user_id Bad Request"})
+		userID = 0
+	}
+
+	limit, err := strconv.ParseInt(c.Query("limit"), 10, 64)
+	if err != nil || limit == 0 {
+		limit = 30 //デフォルト値
+	}
+	offset, err := strconv.ParseInt(c.Query("offset"), 10, 64)
+	if err != nil {
+		offset = 0 //デフォルト値
+	}
+
+	RoomService := service.RoomService{}
+	UserService := service.UserService{}
+
+	pageLog, err := RoomService.GetRefinementSearchLogs(userID, limit, offset)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user log"})
+		return
+	}
+
+	SpecificUserResponseLog := []model.LogGetResponse{}
+
+	for _, log := range pageLog {
+
+		userName, err := UserService.GetUserNameByUserID(log.UserID)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user name"})
+			return
+		}
+		roomName, err := RoomService.GetRoomNameByRoomID(log.RoomID)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to get room name"})
+			return
+		}
+
+		SpecificUserResponseLog = append(SpecificUserResponseLog, model.LogGetResponse{
+			ID:      int64(log.ID),
+			Name:    userName,
+			Room:    roomName,
+			StartAt: log.StartAt.Format("2006-01-02 15:04:05"),
+			EndAt:   log.EndAt.Format("2006-01-02 15:04:05"),
+		})
+	}
+
+	c.JSON(http.StatusOK, SpecificUserResponseLog)
+}

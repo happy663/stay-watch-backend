@@ -27,11 +27,11 @@ POST {{baseURL}}/api/v1/users HTTP/1.1
 content-type: application/json
 
 {
-    "name":"tarou",
-    "uuid":"",
-    "email":"ssinya092222@gmail.com",
-    "role":1,
-    "communityId":1,
+    "name":"s.ayaka",
+    "uuid":"12345",
+    "email":"x22043xx310ss@gmail.com",
+    "role":2,
+    "communityId":2,
     "beaconName":"FCS1301",
     "tagIds":[1,5,10]
 }
@@ -89,7 +89,7 @@ content-type: application/json
 {
     "beacons":[
         {
-            "uuid": "4c000180000021000022000121000024000023",
+            "uuid": "e7d61ea3f8dd49c88f2ff2484c07ac02",
             "rssi": -49
         },
         {
@@ -161,3 +161,6 @@ GET {{baseURL}}/api/v1/tags/1/names
 
 ### コミュニティ（共用も）のタグを取得する
 GET {{baseURL}}/api/v1/tags/2
+
+### 特定のユーザの情報を取得する（10件目から20件取得）
+GET {{baseURL}}/api/v1/logs?user-id=0&&limit=5&&offset=0
